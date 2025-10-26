@@ -32,8 +32,8 @@ cd sightsync_fixed
 # Install dependencies
 npm install
 
-# Update backend URL in src/App.js if needed
-# const BACKEND_URL = 'http://localhost:5000/process';
+## Update backend URL in src/App.js if needed to run locally: 
+const BACKEND_URL = 'http://localhost:5000'
 
 # Run frontend
 npm start

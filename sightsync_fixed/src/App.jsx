@@ -62,7 +62,7 @@ export default function SightSyncApp() {
   const audioRef = useRef(null);
   const currentUtterance = useRef(null);
 
-  const BACKEND_URL = 'http://127.0.0.1:5000/process';
+  const BACKEND_URL = 'https://ai-hackathon-2025-4.onrender.com/process';
 
   // Activate speech synthesis on first user interaction
   const activateSpeech = () => {

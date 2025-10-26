@@ -29,7 +29,11 @@ https://ai-hackathon-2025-six.vercel.app/
 Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 Or update backend URL in src/App.js if needed to run locally: 
 
+navigate to `sightsync_fixed/backend`
+`cd sightsync`
+`cd backend`
 const BACKEND_URL = `http://localhost:5000`
+install dependencies: `pip install -r requirements.txt`
 and `python app.py` to run this local flask server
 
 

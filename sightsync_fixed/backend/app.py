@@ -10,7 +10,6 @@ from openai import OpenAI
 
 # Get API key
 key = os.environ.get('OPENAI_API_KEY')
-print(f"OPENAI_API_KEY: {key}")
 if key:
     key = key.strip().strip("'").strip('"')
 else:

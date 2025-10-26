@@ -21,27 +21,34 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 - OpenAI API key
 
 ## 🚀 Setup Instructions
+### Easiest host
+https://ai-hackathon-2025-six.vercel.app/
 
-### Backend Setup
-```bash
+### For Local Hosting
+Warning: You will need your own OPENAI_API_KEY
+#### Backend Setup
 Backend runs on `https://ai-hackathon-2025-4.onrender.com`
+Or update backend URL in src/App.js if needed to run locally: 
+
+navigate to `sightsync_fixed/backend`
+`cd sightsync`
+`cd backend`
+const BACKEND_URL = `http://localhost:5000`
+install dependencies: `pip install -r requirements.txt`
+and `python app.py` to run this local flask server
+
 
 ### Frontend Setup
-```bash
-# Navigate to frontend
+#### Navigate to frontend
 cd sightsync_fixed
 
-# Install dependencies
+#### Install dependencies
 npm install
 
-# Update backend URL in src/App.js if needed
-# const BACKEND_URL = 'http://localhost:5000/process';
-
-# Run frontend
+#### Run frontend
 npm start
-```
 
-Frontend runs on `http://localhost:3000`
+Frontend runs on `http://localhost:3000` 
 
 ## 📱 Usage
 1. Open `http://localhost:3000` in your browser
@@ -60,11 +67,11 @@ Frontend runs on `http://localhost:3000`
 - Hudson Shields - Physics Major
 - Will Munro - Computer Science Major
 - Ryan Cannings - Electrical Engineering Major
+- Patrick King - Data Science Major
+- Joseph - Mechanical Engineering Major
 
 ## 🏆 UF AI Days Hackathon 2024
 Built with ❤️ for accessibility
-
-```
 
 ---
 

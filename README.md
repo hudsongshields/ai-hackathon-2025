@@ -32,8 +32,8 @@ Or update backend URL in src/App.js if needed to run locally:
 const BACKEND_URL = `http://localhost:5000`
 
 
-#### Frontend Setup
-# Navigate to frontend
+### Frontend Setup
+#### Navigate to frontend
 cd sightsync_fixed
 
 #### Install dependencies

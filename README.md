@@ -61,6 +61,8 @@ Frontend runs on `http://localhost:3000`
 - Hudson Shields - Physics Major
 - Will Munro - Computer Science Major
 - Ryan Cannings - Electrical Engineering Major
+- Patrick King - Data Science Major
+- Joseph - Mechanical Engineering Major
 
 ## 🏆 UF AI Days Hackathon 2024
 Built with ❤️ for accessibility

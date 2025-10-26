@@ -58,6 +58,7 @@ def process_image_with_model(image_data):
     )
     
     description = response.choices[0].message.content
+    description = description.strip().strip("#").strip()
     return description
 
 @app.route('/process', methods=['POST'])

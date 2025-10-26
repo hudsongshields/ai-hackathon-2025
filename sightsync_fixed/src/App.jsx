@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Upload, Volume2, Loader2, AlertCircle, VolumeX, X } from 'lucide-react';
+import { Camera, Upload, Volume2, Loader2, AlertCircle, VolumeX, X, SwitchCamera } from 'lucide-react';
 
 export default function SightSyncApp() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -11,6 +11,7 @@ export default function SightSyncApp() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [stream, setStream] = useState(null);
+  const [facingMode, setFacingMode] = useState('environment'); // 'user' or 'environment'
  
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
@@ -125,26 +126,68 @@ export default function SightSyncApp() {
     fileInputRef.current?.click();
   };
 
-  const openCamera = async () => {
+  const openCamera = async (mode = 'environment') => {
     speakText('Opening camera');
+    setError('');
    
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
+      // Stop existing stream if any
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+
+      const constraints = {
+        video: {
+          facingMode: mode,
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
         audio: false
-      });
+      };
+
+      const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
      
       setStream(mediaStream);
       setIsCameraOpen(true);
+      setFacingMode(mode);
       setStatusMessage('Camera ready. Click "Capture Photo" to take a picture.');
      
+      // Wait for video element to be ready
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
+        
+        // Ensure video plays (important for desktop browsers)
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current.play().catch(err => {
+            console.error('Error playing video:', err);
+            setError('Camera started but video playback failed. Try again.');
+          });
+        };
       }
     } catch (err) {
-      setError('Could not access camera. Please check permissions in your browser settings.');
       console.error('Camera error:', err);
+      
+      let errorMessage = 'Could not access camera. ';
+      
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errorMessage += 'Please allow camera access in your browser settings.';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errorMessage += 'No camera found on this device.';
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        errorMessage += 'Camera is already in use by another application.';
+      } else {
+        errorMessage += 'Please check your browser permissions.';
+      }
+      
+      setError(errorMessage);
+      setIsCameraOpen(false);
     }
+  };
+
+  const flipCamera = async () => {
+    const newMode = facingMode === 'environment' ? 'user' : 'environment';
+    speakText(`Switching to ${newMode === 'user' ? 'front' : 'back'} camera`);
+    await openCamera(newMode);
   };
 
   const capturePhoto = () => {
@@ -305,13 +348,24 @@ export default function SightSyncApp() {
                   muted
                   className="w-full h-64 object-cover rounded-2xl shadow-lg"
                 />
-                <button
-                  onClick={closeCamera}
-                  className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
-                  aria-label="Close camera"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="absolute top-2 right-2 flex gap-2">
+                  <button
+                    onClick={flipCamera}
+                    onFocus={() => handleButtonFocus('Flip camera button')}
+                    onMouseEnter={() => handleButtonHover('Flip camera')}
+                    className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-all"
+                    aria-label="Flip camera"
+                  >
+                    <SwitchCamera className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={closeCamera}
+                    className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-all"
+                    aria-label="Close camera"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ) : imagePreview ? (
               <div>
@@ -375,7 +429,7 @@ export default function SightSyncApp() {
               <>
                 <div className="grid grid-cols-2 gap-3">
                   <button
-                    onClick={openCamera}
+                    onClick={() => openCamera('environment')}
                     onFocus={() => handleButtonFocus('Camera button. Press to open camera.')}
                     onMouseEnter={() => handleButtonHover('Camera button')}
                     onTouchStart={() => handleTouchStart('Camera button. Long press to hear description.')}

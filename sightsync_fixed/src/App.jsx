@@ -52,6 +52,7 @@ export default function SightSyncApp() {
   const [ttsEnabled, setTtsEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [showWebcam, setShowWebcam] = useState(false);
   const [stream, setStream] = useState(null);
   const [speechActivated, setSpeechActivated] = useState(false);
@@ -88,9 +89,20 @@ export default function SightSyncApp() {
     return () => window.removeEventListener('resize', checkIfDesktop);
   }, []);
 
+  // mobile detection
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+      setIsMobile(hasCoarsePointer);
+    };
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
   // Initialize speech synthesis on mount (desktop only)
   useEffect(() => {
-    if (isDesktop) {
+    if (isDesktop || isMobile) {
       speakText('Welcome to SightSync. AI-Powered Image Descriptions for the visually impaired. Take or select a photo to begin.');
     }
     return () => {
@@ -99,7 +111,7 @@ export default function SightSyncApp() {
       }
       stopWebcam();
     };
-  }, [isDesktop]);
+  }, [isDesktop, isMobile]);
 
   // Announce status message changes (desktop only)
   useEffect(() => {
@@ -153,7 +165,7 @@ export default function SightSyncApp() {
   };
 
   const handleUploadClick = () => {
-    if (isDesktop) {
+    if (isDesktop || isMobile) {
       speakText('Opening file picker to upload image');
     }
     fileInputRef.current?.click();
@@ -161,7 +173,7 @@ export default function SightSyncApp() {
 
   const startWebcam = async () => {
     try {
-      if (isDesktop) {
+      if (isDesktop || isMobile) {
         speakText('Opening camera');
       }
       
@@ -232,7 +244,7 @@ export default function SightSyncApp() {
         setImagePreview(URL.createObjectURL(blob));
         setStatusMessage('Photo captured! Processing automatically...');
         
-        if (isDesktop) {
+        if (isDesktop || isMobile) {
           speakText('Photo captured successfully. Processing image.');
         }
         
@@ -258,7 +270,7 @@ export default function SightSyncApp() {
     
     if (!fileToUpload) return;
 
-    if (isDesktop) {
+    if (isDesktop || isMobile) {
       speakText('Processing image. Please wait.');
     }
     setIsProcessing(true);
@@ -281,7 +293,7 @@ export default function SightSyncApp() {
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
 
-      if (isDesktop) {
+      if (isDesktop || isMobile) {
         window.speechSynthesis.cancel();
       }
 
@@ -307,7 +319,7 @@ export default function SightSyncApp() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Speech Activation Overlay */}
-        {!speechActivated && isDesktop && (
+        {!speechActivated && (isDesktop || isMobile) && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
               <Volume2 className="w-16 h-16 mx-auto mb-4 text-purple-600" />
@@ -339,7 +351,7 @@ export default function SightSyncApp() {
         {/* Main Card */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-6 border border-white/20">
           {/* TTS Toggle - Only show on desktop */}
-          {isDesktop && (
+          {(isDesktop || isMobile) && (
             <div className="mb-4 flex justify-end">
               <AccessibleButton
                 label={ttsEnabled ? 'Turn off text to speech' : 'Turn on text to speech'}

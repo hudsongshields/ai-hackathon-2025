@@ -30,6 +30,7 @@ Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 Or update backend URL in src/App.js if needed to run locally: 
 
 const BACKEND_URL = `http://localhost:5000`
+and `python app.py` to run this local flask server
 
 
 ### Frontend Setup

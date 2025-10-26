@@ -65,3 +65,4 @@ urllib3==2.5.0
 wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1758622279606/work
 Werkzeug==3.1.3
 zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1749421620841/work
+gunicorn==21.2.0

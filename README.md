@@ -24,23 +24,7 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 
 ### Backend Setup
 ```bash
-# Navigate to project root
-cd backend
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Create .env file
-cp .env.example .env
-
-# Add your OpenAI API key to .env
-# OPENAI_API_KEY=sk-proj-your-key-here
-
-# Run backend
-python app.py
-```
-
-Backend runs on `http://localhost:5000`
+Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 
 ### Frontend Setup
 ```bash

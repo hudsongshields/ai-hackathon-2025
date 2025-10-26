@@ -126,7 +126,7 @@ export default function SightSyncApp() {
     fileInputRef.current?.click();
   };
 
-  const openCamera = async (mode = 'environment') => {
+  const openCamera = async (mode = null) => {
     speakText('Opening camera');
     setError('');
    
@@ -136,9 +136,12 @@ export default function SightSyncApp() {
         stream.getTracks().forEach(track => track.stop());
       }
 
+      // If no mode specified, default to back camera (environment)
+      const requestedMode = mode || 'environment';
+
       const constraints = {
         video: {
-          facingMode: mode,
+          facingMode: requestedMode,
           width: { ideal: 1920 },
           height: { ideal: 1080 }
         },
@@ -149,7 +152,7 @@ export default function SightSyncApp() {
      
       setStream(mediaStream);
       setIsCameraOpen(true);
-      setFacingMode(mode);
+      setFacingMode(requestedMode);
       setStatusMessage('Camera ready. Click "Capture Photo" to take a picture.');
      
       // Wait for video element to be ready
@@ -429,7 +432,7 @@ export default function SightSyncApp() {
               <>
                 <div className="grid grid-cols-2 gap-3">
                   <button
-                    onClick={() => openCamera('environment')}
+                    onClick={() => openCamera()}
                     onFocus={() => handleButtonFocus('Camera button. Press to open camera.')}
                     onMouseEnter={() => handleButtonHover('Camera button')}
                     onTouchStart={() => handleTouchStart('Camera button. Long press to hear description.')}
@@ -518,5 +521,4 @@ export default function SightSyncApp() {
     </div>
   );
 }
-
   

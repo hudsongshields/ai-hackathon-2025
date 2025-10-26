@@ -23,11 +23,9 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 ## 🚀 Setup Instructions
 
 ### Backend Setup
-```bash
 Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 
 ### Frontend Setup
-```bash
 # Navigate to frontend
 cd sightsync_fixed
 
@@ -39,7 +37,7 @@ npm install
 
 # Run frontend
 npm start
-```
+
 
 Frontend runs on `http://localhost:3000`
 

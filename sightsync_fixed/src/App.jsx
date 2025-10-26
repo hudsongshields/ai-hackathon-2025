@@ -33,6 +33,16 @@ export default function SightSyncApp() {
     };
   }, []);
 
+  // Effect to handle video element when camera opens
+  useEffect(() => {
+    if (isCameraOpen && stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play().catch(err => {
+        console.error('Error playing video in effect:', err);
+      });
+    }
+  }, [isCameraOpen, stream]);
+
   // Cleanup camera stream when component unmounts or camera closes
   useEffect(() => {
     return () => {
@@ -136,12 +146,18 @@ export default function SightSyncApp() {
         stream.getTracks().forEach(track => track.stop());
       }
 
-      // If no mode specified, default to back camera (environment)
-      const requestedMode = mode || 'environment';
+      // Detect if user is on mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      // If no mode specified, use environment (back camera) on mobile, user (front) on desktop
+      let requestedMode = mode;
+      if (!requestedMode) {
+        requestedMode = isMobile ? 'environment' : 'user';
+      }
 
       const constraints = {
         video: {
-          facingMode: requestedMode,
+          facingMode: { ideal: requestedMode },
           width: { ideal: 1920 },
           height: { ideal: 1080 }
         },
@@ -150,23 +166,22 @@ export default function SightSyncApp() {
 
       const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
      
+      // Set stream and state BEFORE setting up video element
       setStream(mediaStream);
-      setIsCameraOpen(true);
       setFacingMode(requestedMode);
-      setStatusMessage('Camera ready. Click "Capture Photo" to take a picture.');
-     
-      // Wait for video element to be ready
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-        
-        // Ensure video plays (important for desktop browsers)
-        videoRef.current.onloadedmetadata = () => {
+      setIsCameraOpen(true);
+      
+      // Use setTimeout to ensure state updates before setting video
+      setTimeout(() => {
+        if (videoRef.current && mediaStream) {
+          videoRef.current.srcObject = mediaStream;
           videoRef.current.play().catch(err => {
             console.error('Error playing video:', err);
-            setError('Camera started but video playback failed. Try again.');
           });
-        };
-      }
+        }
+      }, 50);
+      
+      setStatusMessage('Camera ready. Click "Capture Photo" to take a picture.');
     } catch (err) {
       console.error('Camera error:', err);
       
@@ -349,7 +364,7 @@ export default function SightSyncApp() {
                   autoPlay
                   playsInline
                   muted
-                  className="w-full h-64 object-cover rounded-2xl shadow-lg"
+                  className="w-full h-64 object-cover rounded-2xl shadow-lg bg-black"
                 />
                 <div className="absolute top-2 right-2 flex gap-2">
                   <button
@@ -521,4 +536,3 @@ export default function SightSyncApp() {
     </div>
   );
 }
-  

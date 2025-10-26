@@ -21,7 +21,10 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 - OpenAI API key
 
 ## 🚀 Setup Instructions
+### Easiest host
+https://ai-hackathon-2025-six.vercel.app/
 
+### For Local Hosting
 ### Backend Setup
 Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 

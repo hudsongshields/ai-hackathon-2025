@@ -22,27 +22,26 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 
 ## 🚀 Setup Instructions
 ### Easiest host
-https://ai-hackathon-2025-six.vercel.app/
+`https://ai-hackathon-2025-six.vercel.app/`
 
 ### For Local Hosting
-### Backend Setup
+#### Backend Setup
 Backend runs on `https://ai-hackathon-2025-4.onrender.com`
+Or update backend URL in src/App.js if needed to run locally: 
+const BACKEND_URL = 'http://localhost:5000'
 
-### Frontend Setup
+
+#### Frontend Setup
 # Navigate to frontend
 cd sightsync_fixed
 
-### Install dependencies
+#### Install dependencies
 npm install
 
-### Update backend URL in src/App.js if needed to run locally: 
-const BACKEND_URL = 'http://localhost:5000'
-
-### Run frontend
+#### Run frontend
 npm start
 
-
-Frontend runs on `http://localhost:3000`
+Frontend runs on `http://localhost:3000` 
 
 ## 📱 Usage
 1. Open `http://localhost:3000` in your browser
@@ -66,8 +65,6 @@ Frontend runs on `http://localhost:3000`
 
 ## 🏆 UF AI Days Hackathon 2024
 Built with ❤️ for accessibility
-
-```
 
 ---
 

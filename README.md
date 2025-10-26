@@ -22,7 +22,7 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 
 ## 🚀 Setup Instructions
 ### Easiest host
-`https://ai-hackathon-2025-six.vercel.app/`
+https://ai-hackathon-2025-six.vercel.app/
 
 ### For Local Hosting
 #### Backend Setup

@@ -28,7 +28,8 @@ SightSync uses GPT-4 Vision to generate detailed, spatial-aware audio descriptio
 #### Backend Setup
 Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 Or update backend URL in src/App.js if needed to run locally: 
-const BACKEND_URL = 'http://localhost:5000'
+
+const BACKEND_URL = `http://localhost:5000`
 
 
 #### Frontend Setup

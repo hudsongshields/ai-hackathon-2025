@@ -32,13 +32,13 @@ Backend runs on `https://ai-hackathon-2025-4.onrender.com`
 # Navigate to frontend
 cd sightsync_fixed
 
-# Install dependencies
+### Install dependencies
 npm install
 
-## Update backend URL in src/App.js if needed to run locally: 
+### Update backend URL in src/App.js if needed to run locally: 
 const BACKEND_URL = 'http://localhost:5000'
 
-# Run frontend
+### Run frontend
 npm start
 
 
